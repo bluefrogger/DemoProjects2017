@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# SQL Server Management Studio Solution File, Format Version 12.00
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "SQLScripts", "SQLScripts\SQLScripts.ssmssqlproj", "{56DD0E42-521E-4474-A510-BEB114F29013}"
+EndProject
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "MyScripts", "MyScripts\MyScripts.ssmssqlproj", "{81B50ECF-F511-40F3-8F9B-AC3BBD502C64}"
+EndProject
+Project("{4F2E2C19-372F-40D8-9FA7-9D2138C6997A}") = "SampleScripts", "SampleScripts\SampleScripts.ssmssqlproj", "{CCCBFF54-4F0C-4CB8-98FB-920802415524}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Default|Default = Default|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{56DD0E42-521E-4474-A510-BEB114F29013}.Default|Default.ActiveCfg = Default
+		{81B50ECF-F511-40F3-8F9B-AC3BBD502C64}.Default|Default.ActiveCfg = Default
+		{CCCBFF54-4F0C-4CB8-98FB-920802415524}.Default|Default.ActiveCfg = Default
+		{637B81CA-D33A-4194-BDE5-0D9F09B17A26}.Default|Default.ActiveCfg = Default
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

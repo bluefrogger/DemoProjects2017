@@ -1,0 +1,29 @@
+@
+clear screen
+describe desc
+notepad
+script
+set linesize line 2000
+set pagesize page 5;
+set timing off;
+set wrap off
+show all
+show user
+sqlplus
+type
+/
+L 2 4 - List lines 2 to 4
+L * - List current line
+c/old/new
+c/delete
+a - append
+1 - goto line 1 make current
+cl buff - delete all lines
+del - delete current line
+i - insert mode
+del 3 5 - del lines 3 to 5
+1 replacement_text - replace line 1 with replacement_text
+- line continuation
+connect name/password@sid
+
+$ or HOST or ! - shell out to operating system command prompt

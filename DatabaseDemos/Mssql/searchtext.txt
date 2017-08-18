@@ -1,0 +1,313 @@
+select ID , LEFT(SearchText,LEN(SearchText) - 1)  AS SearchText
+FROM
+(SELECT ID,
+	(SELECT SearchText + '; ' AS [text()] FROM   dbo.IIM001026_IIM001prt2_Search_temp AS internal -- Change Table name
+	WHERE  internal.ID = ID.ID 
+	group by SearchText
+	FOR xml PATH ('')
+	) 
+	AS SearchText FROM 
+			(SELECT   ID FROM    dbo.IIM001026_IIM001prt2_Search_temp -- Change Table name
+			GROUP BY ID
+			) 
+			AS ID
+)
+AS pre_trimmed
+order by ID , SearchText
+
+
+select count(*) from tbldoc with(nolock)
+where iim001026_hit_fam = 1
+
+
+select srm_edsource --, replace(cast(srm_edsource as nvarchar(max)),'\\prod-cfs-data\eSource\Irell Manella\IM001005\IM2086E004\','')
+
+--update tbldoc set srm_edsource = replace(cast(srm_edsource as nvarchar(max)),'S:\Irell Manella\IIM001018_Part2\IM2086E039\','')
+--update tbldoc set srm_mailstore = srm_edsource
+from tbledsources s with(nolock)
+inner join tblDoc d with(nolock) on s.id = d.edsourceid
+where iim001026_hit_fam = 1
+
+
+select sourcepath, sourcefilename,
+--update tbldoc set srm_edsource = 
+case when sourcefilename is null then sourcepath
+	else sourcepath + sourcefilename end, count(*)
+from tbledsources s with(nolock)
+inner join tblDoc d with(nolock) on s.id = d.edsourceid
+where iim001026_hit_fam = 1
+group by sourcepath, sourcefilename
+
+
+select cast(srm_edfolder as nvarchar(max))
+--update tbldoc set srm_edfolder = replace(cast(srm_edfolder as nvarchar(max)),'S:\Irell Manella\IIM001018_Part2\IM2086E039\','')
+from tblfolders f inner join tbldoc d
+on f.id = d.EDFolderID
+where iim001026_hit_fam = 1
+
+
+group by cast(srm_edfolder as nvarchar(max))
+
+
+select 
+left(cast(srm_sourcefile as nvarchar(max)), charindex('\',srm_sourcefile,charindex('\',srm_sourcefile,charindex('\',srm_sourcefile,charindex('\\prod',srm_sourcefile,0)+1)+1)+1))
+from tbldoc with(nolock)
+--update tbldoc set srm_sourcefile = sourcefile
+where iim001026_hit_fam = 1
+group by left(cast(srm_sourcefile as nvarchar(max)), charindex('\',srm_sourcefile,charindex('\',srm_sourcefile,charindex('\',srm_sourcefile,charindex('\\prod',srm_sourcefile,0)+1)+1)+1))
+
+
+select srm_sourcefile, charindex('\') from tbldoc with(nolock)
+where iim001026_hit_fam = 1
+and srm_sourcefile like '\\prod-cfs-data\eSource\%'
+
+
+select name, cast(srm_sourcefile as nvarchar(max)), REPLACE(cast(srm_sourcefile as nvarchar(max)),'S:\Irell Manella\IIM001018\IM2086E005\','')
+--update tbldoc set srm_sourcefile = REPLACE(cast(srm_sourcefile as nvarchar(max)),'S:\Irell Manella\IIM001018_Part2\IM2086E039\','')
+from tblDoc d with(nolock) inner join tblFolders f with(nolock) on d.EDFolderID = f.ID
+where iim001030_hit_fam = 1
+group by name, cast(srm_sourcefile as nvarchar(max))
+
+
+select substring(srm_sourcefile,0,charindex('\',srm_sourcefile,CHARINDEX('\',srm_sourcefile,charindex('\',srm_sourcefile,charindex('\',srm_sourcefile,0)+1)+1)+1))
+from tblDoc d with(nolock) inner join tblFolders f with(nolock) on d.EDFolderID = f.ID
+where iim001026_hit_fam = 1
+group by substring(srm_sourcefile,0,charindex('\',srm_sourcefile,CHARINDEX('\',srm_sourcefile,charindex('\',srm_sourcefile,charindex('\',srm_sourcefile,0)+1)+1)+1))
+
+
+select 
+substring(srm_sourcefile,0,
+	charindex('\',srm_sourcefile,
+		charindex('\',srm_sourcefile,
+			charindex('\',srm_sourcefile,
+				charindex('\',SRM_SourceFile,1
+						)
+					 )+1
+				  )+1
+			  )+1
+		  )
+from tblDoc d with(nolock) 
+where iim001026_hit_fam = 1
+group by
+substring(srm_sourcefile,0,
+	charindex('\',srm_sourcefile,
+		charindex('\',srm_sourcefile,
+			charindex('\',srm_sourcefile,
+				charindex('\',srm_sourcefile,1
+						)
+					 )+1
+				  )+1
+			  )+1
+		  )
+
+select cast(srm_sourcefile as nvarchar(max)) from tbldoc with(nolock)
+where srm_sourcefile like 'S:\%'
+or srm_sourcefile like '\\prod-cfs%'
+group by cast(srm_sourcefile as nvarchar(max))
+
+
+select srm_sourcefile from tbldoc with(nolock)
+--update tbldoc set srm_sourcefile = 
+replace(cast(srm_sourcefile as nvarchar(max)),'S:\Irell Manella\IIM001018_Part2\IM2086E039\','')
+where iim001026_hit_fam = 1
+
+
+select srm_edsource, srm_mailstore, srm_edfolder, srm_sourcefile from tbldoc with(nolock)
+where iim001026_hit_fam = 1
+
+
+ 
+select textxstatus,TiffStatus,ocrstatus, COUNT(*) from tblDoc with(nolock)
+where srm_wave = 'IIM001033'
+group by TextXStatus,TiffStatus,ocrstatus
+
+
+ select SRM_BegBate_DOCID, iim001030_begdoc, iim001030_enddoc,
+ SRM_DocID, docid
+ from tblDoc with(nolock)
+ where iim001030_hit_fam = 1
+ 
+ select COUNT(*) from tbldoc
+ --update tbldoc set srm_docid = docid
+ where iim001030_hit_fam = 1
+
+ order by srm_begbate_docid
+ 
+
+select iim001030_begdoc from tblDoc
+--update tbldoc set iim001030_begdoc = SRM_BegBate_DOCID
+where iim001030_hit_fam = 1
+order by iim001030_begdoc 
+
+
+
+select iim001030_begdoc from tblDoc
+--update tbldoc set iim001030_enddoc = iim001030_begdoc
+where iim001030_hit_fam = 1
+
+
+
+select iim001030_searchterm, iim001030_deliv_doc from tblDoc
+--update tbldoc set iim001030_enddoc = iim001030_begdoc
+where iim001030_hit_fam = 1
+
+
+
+ select SRM_BegBate_DOCID,SRM_DocID,SRM_TITLE_SUBJ, iim001030_begdoc,*
+  --update tbldoc set srm_docid = docid
+ from tblDoc --with(nolock)
+ where iim001030_hit_fam = 1
+ and SRM_SortDate is null
+ 
+ 
+select DateCreated,DateLastMod,DateAccessed,DateLastPrnt,DateSent,DateRcvd,DateAppStart,DateAppEnd,SRM_SortDate,SRM_InDate,SRM_InDate_Fam,SRM_CREATEDATE,SRM_EDITDATE
+from tblDoc
+ where iim001030_hit_fam = 1
+ and SRM_SortDate is null
+
+
+select SourcePath, SourceFileName,SourceFile, srm_edsource,
+--update tbldoc set srm_edsource =
+case when SourceFileName IS null then SourcePath
+	else sourcepath+sourcefilename end
+from tblDoc d inner join tblEDSources s on d.EDSourceID = s.ID
+where iim001030_hit_fam = 1
+and SourceFileName is not null
+
+
+
+select SourcePath, SourceFileName, replace(cast(srm_edsource as nvarchar(max)),'S:\Irell Manella\IM001005_Part2\IM2086E012\',''), srm_edsource
+--update tbldoc set srm_edsource = replace(cast(srm_edsource as nvarchar(max)),'S:\Irell Manella\IM001005_Part2\IM2086E012\','')
+from tblDoc d inner join tblEDSources s on d.EDSourceID = s.ID
+where iim001030_hit_fam = 1
+
+
+select sourcePath
+from tblDoc d inner join tblEDSources s on d.EDSourceID = s.ID
+where iim001030_hit_fam = 1
+group by sourcePath
+
+
+select srm_wave, srm_exportvolume, COUNT(*) from tblDoc
+--update tbldoc set srm_exportvolume = 'PP07_023'
+where iim001030_hit_fam = 1
+group by srm_wave, srm_exportvolume
+
+
+select textxstatus,TiffStatus,ocrstatus, COUNT(*) from tblDoc with(nolock)
+where iim001030_hit_fam = 1
+group by TextXStatus,TiffStatus,ocrstatus
+
+
+
+
+select name, cast(srm_edfolder as nvarchar(max)), REPLACE(cast(srm_edfolder as nvarchar(max)),'S:\Irell Manella\IM001017_Part2\IM2086E056\','')
+--update tbldoc set srm_edfolder = REPLACE(cast(srm_edfolder as nvarchar(max)),'S:\Irell Manella\IM001017_Part2\IM2086E056\','')
+from tblDoc d inner join tblFolders f on d.EDFolderID = f.ID
+where iim001030_hit_fam = 1
+group by name, cast(srm_edfolder as nvarchar(max))
+
+
+select name, cast(srm_edfolder as nvarchar(max)), 
+substring(name,charindex('\',name,charindex('\',name,charindex('\',name,charindex('\',name,0)+1)+1)+1)+1,LEN(name))
+--update tbldoc set srm_edfolder = substring(name,charindex('\',name,charindex('\',name,charindex('\',name,charindex('\',name,0)+1)+1)+1)+1,LEN(name))
+from tblDoc d inner join tblFolders f on d.EDFolderID = f.ID
+where iim001030_hit_fam = 1
+group by name, cast(srm_edfolder as nvarchar(max))
+
+
+select 
+substring(name,0,charindex('\',name,charindex('\',name,charindex('\',name,charindex('\',name,0)+1)+1)+1)+1)
+--update tbldoc set srm_edfolder = substring(name,0,charindex('\',name,charindex('\',name,charindex('\',name,charindex('\',name,0)+1)+1)+1)+1)
+from tblDoc d inner join tblFolders f on d.EDFolderID = f.ID
+where iim001030_hit_fam = 1
+group by substring(name,0,charindex('\',name,charindex('\',name,charindex('\',name,charindex('\',name,0)+1)+1)+1)+1)
+
+
+select srm_edsource, srm_mailstore from tblDoc
+--update tbldoc set srm_mailstore = srm_edsource
+where iim001030_hit_fam = 1
+
+select srm_title_subj,
+--update tbldoc set srm_title_subj =
+case when title IS NULL then
+	case when [subject]is not null then [subject]
+		else null end
+	else case when [subject] is not null then title + '; ' + [subject]
+		else title end
+end
+from tblDoc where iim001030_hit_fam = 1
+go
+
+
+select iim001030_begdoc, iim001030_enddoc from tblDoc
+--update tbldoc set iim001030_begdoc = SRM_BegBate_DOCID
+where iim001030_hit_fam = 1
+order by iim001030_begdoc 
+
+select sourcefile from tblDoc with(nolock)
+--update tbldoc set srm_sourcefile = sourcefile
+where iim001030_hit_fam = 1
+
+
+select name, cast(srm_sourcefile as nvarchar(max)), REPLACE(cast(srm_sourcefile as nvarchar(max)),'S:\Irell Manella\IIM001018\IM2086E005\','')
+--update tbldoc set srm_sourcefile = REPLACE(cast(srm_sourcefile as nvarchar(max)),'S:\Irell Manella\IIM001018_Part2\IM2086E039\','')
+from tblDoc d with(nolock) inner join tblFolders f with(nolock) on d.EDFolderID = f.ID
+where iim001030_hit_fam = 1
+
+group by name, cast(srm_sourcefile as nvarchar(max))
+
+select substring(name,0,charindex('\',name,CHARINDEX('\',name,charindex('\',name,charindex('\',name,0)+1)+1)+1))
+from tblDoc d with(nolock) inner join tblFolders f with(nolock) on d.EDFolderID = f.ID
+where iim001030_hit_fam = 1
+group by substring(name,0,charindex('\',name,CHARINDEX('\',name,charindex('\',name,charindex('\',name,0)+1)+1)+1))
+
+
+
+
+select srm_sourcefile from tblDoc with(nolock)
+where iim001030_hit_fam = 1
+order by iim001030_begdoc
+
+go
+
+use AlexTest
+
+select ID ,
+LEFT(SearchText,LEN(SearchText) - 1)  AS SearchText
+FROM   (SELECT ID,
+(SELECT SearchText + '; ' AS [text()]
+FROM   dbo.IIM001026_IIM001_prt2_InSens_List1_Search AS internal -- Change Table name
+WHERE  internal.ID = ID.ID 
+group by SearchText
+FOR xml PATH ('')
+) AS SearchText
+FROM   ( SELECT   ID
+FROM    dbo.IIM001026_IIM001_prt2_InSens_List1_Search -- Change Table name
+GROUP BY ID ) AS ID) AS pre_trimmed
+order by ID , SearchText
+
+GO
+
+USE AlexTest
+
+SELECT ID
+	,LEFT(SearchText, LEN(SearchText) - 1) AS SearchText
+FROM (
+	SELECT ID
+		,(
+			SELECT SearchText + '; ' AS [text()]
+			FROM dbo.IIM001026_IIM001_prt2_InSens_List1_Search AS internal -- Change Table name
+			WHERE internal.ID = ID.ID
+			GROUP BY SearchText
+			FOR XML PATH('')
+			) AS SearchText
+	FROM (
+		SELECT ID
+		FROM dbo.IIM001026_IIM001_prt2_InSens_List1_Search -- Change Table name
+		GROUP BY ID
+		) AS ID
+	) AS pre_trimmed
+ORDER BY ID
+	,SearchText
+

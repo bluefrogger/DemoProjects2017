@@ -1,0 +1,5 @@
+CONN sys/password AS SYSDBA
+then:
+ALTER USER scott ACCOUNT UNLOCK;
+username=scott
+password=tiger

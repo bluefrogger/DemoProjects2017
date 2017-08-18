@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="e15741f7-2b2d-4f3e-a8fb-986f594c82d0" ChangeDateTime="07/15/2016 18:35:55">
+    <Property Name="ElementName" Value="[dbo].[LogCalendar].[StageDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LogCalendar]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ExtractDate" />
+  </Operation>
+</Operations>

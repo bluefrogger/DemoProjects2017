@@ -1,0 +1,20 @@
+
+declare @counter int;
+set @counter = 16;
+declare scursor cursor for
+	select id, srm_sortorder
+	from tbldoc
+	where srm_wave = 'fm104049'
+	and id between 335 and 343;
+open scursor;
+fetch next from scursor;
+while @@fetch_status = 0
+	begin
+		update tbldoc set srm_sortorder = @counter
+		where current of scursor;
+		fetch next from scursor;
+		set @counter = @counter + 1;
+	end
+close scursor;
+deallocate scursor;
+go

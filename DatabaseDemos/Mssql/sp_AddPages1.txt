@@ -1,0 +1,21 @@
+USE [IIM001]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_AddPages1]    Script Date: 8/13/2014 2:27:23 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[sp_AddPages1]
+@ID int,
+@Pages int,
+@OcrFlag char(1)
+AS
+BEGIN
+DECLARE @I int
+SET @I = 1
+WHILE @I <=  @Pages
+BEGIN
+   insert into tblpage (id,page,header,footer,ocrflag) values (@ID,@I,0,0,@OcrFlag)
+   SET @I = @I + 1
+END
+END

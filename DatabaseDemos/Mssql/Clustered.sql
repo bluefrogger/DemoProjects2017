@@ -1,0 +1,1 @@
+-- http://sqlblog.com/blogs/aaron_bertrand/archive/2010/02/08/bad-habits-to-kick-putting-an-identity-column-on-every-table.aspx

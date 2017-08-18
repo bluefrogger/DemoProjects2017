@@ -1,0 +1,17 @@
+﻿CREATE TABLE [awlt2011].[Customer](
+	[CustomerID] [int] NULL,
+	[NameStyle] [dbo].[NameStyle] NULL,
+	[Title] [nvarchar](4000) NULL,
+	[FirstName] [dbo].[Name] NULL,
+	[MiddleName] [dbo].[Name] NULL,
+	[LastName] [dbo].[Name] NULL,
+	[Suffix] [nvarchar](4000) NULL,
+	[CompanyName] [nvarchar](4000) NULL,
+	[SalesPerson] [nvarchar](4000) NULL,
+	[EmailAddress] [nvarchar](4000) NULL,
+	[Phone] [dbo].[Phone] NULL,
+	[PasswordHash] [varchar](8000) NULL,
+	[PasswordSalt] [varchar](8000) NULL,
+	[rowguid] [uniqueidentifier] NULL,
+	[ModifiedDate] [datetime] NULL
+) ON [DataFiles]

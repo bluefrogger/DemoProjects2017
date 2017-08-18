@@ -1,0 +1,26 @@
+﻿
+CREATE TABLE [dbo].[DimDate](
+	[nb] [int] NOT NULL,
+	[Dt] [date] not NULL,
+	constraint pk_DimDate_Dt primary key clustered (Dt),
+	[Dt112] [char](8) NULL,
+	[Dt101] [char](10) NULL,
+	[YY] [int] NULL,
+	[MM] [int] NULL,
+	[FDtofMM] [date] NULL,
+	[LDtofMM] [date] NULL,
+	[QQ] [int] NULL,
+	[FDtofQQ] [date] NULL,
+	[LDtofQQ] [date] NULL,
+	[DD] [int] NULL,
+	[Dw] [int] NULL,
+	[DwName] [nvarchar](30) NULL,
+	[DwShort] [nchar](3) NULL,
+	[DwAbbr] [nchar](2) NULL,
+	[DDofYY] [int] NULL,
+	[DDofWk] [int] NULL,
+	[WkofYY] [int] NULL,
+	[WkOfMM] [int] NULL,
+	[WkNoReverse] [int] NULL,
+	[LDDofMM] [int] NULL
+) ON [DataFiles]

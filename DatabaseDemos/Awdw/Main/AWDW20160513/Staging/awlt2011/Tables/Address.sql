@@ -1,0 +1,11 @@
+﻿CREATE TABLE [awlt2011].[Address](
+	[AddressID] [int] NULL,
+	[AddressLine1] [nvarchar](4000) NULL,
+	[AddressLine2] [nvarchar](4000) NULL,
+	[City] [nvarchar](4000) NULL,
+	[StateProvince] [dbo].[Name] NULL,
+	[CountryRegion] [dbo].[Name] NULL,
+	[PostalCode] [nvarchar](4000) NULL,
+	[rowguid] [uniqueidentifier] NULL,
+	[ModifiedDate] [datetime] NULL
+) ON [DataFiles]

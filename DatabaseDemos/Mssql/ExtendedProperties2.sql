@@ -1,0 +1,1 @@
+-- http://blogs.lessthandot.com/index.php/datamgmt/datadesign/document-your-sql-server-databases/
