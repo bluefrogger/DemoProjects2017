@@ -1,1 +1,0 @@
-﻿CREATE UNIQUE CLUSTERED INDEX uciTally ON dbo.Tally(nb)

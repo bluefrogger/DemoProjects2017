@@ -1,2 +1,0 @@
--- http://dba.stackexchange.com/questions/17295/sql-backups-full-vs-differential-vs-log-shipping
--- https://nilebride.wordpress.com/2011/07/24/log-shipping-vs-mirroring-vs-replication/

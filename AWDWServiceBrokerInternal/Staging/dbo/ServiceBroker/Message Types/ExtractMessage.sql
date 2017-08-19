@@ -1,2 +1,0 @@
-﻿CREATE MESSAGE TYPE [ExtractMessage]
-	VALIDATION = NONE
