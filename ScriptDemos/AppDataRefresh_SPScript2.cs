@@ -129,46 +129,46 @@ namespace AppDataRefresh_SPScript2
         /* Connect to database and get table and column lists. */
         public static List<DataRefreshTable> GetDataRefreshTables()
         {
-            string KemperConnString = ConfigurationManager.ConnectionStrings["Test"].ConnectionString;
-            SqlConnectionStringBuilder KemperConnStringBuilder = new SqlConnectionStringBuilder(KemperConnString);
-            SqlConnection KemperSqlConn = new SqlConnection(KemperConnString);
-            ServerConnection KemperServerConn = new ServerConnection(KemperSqlConn);
-            Server KemperServer = new Server(KemperServerConn);
-            Database KemperDatabase = KemperServer.Databases[KemperConnStringBuilder.InitialCatalog];
+            string DummyConnString = ConfigurationManager.ConnectionStrings["Test"].ConnectionString;
+            SqlConnectionStringBuilder DummyConnStringBuilder = new SqlConnectionStringBuilder(DummyConnString);
+            SqlConnection DummySqlConn = new SqlConnection(DummyConnString);
+            ServerConnection DummyServerConn = new ServerConnection(DummySqlConn);
+            Server DummyServer = new Server(DummyServerConn);
+            Database DummyDatabase = DummyServer.Databases[DummyConnStringBuilder.InitialCatalog];
 
-            List<DataRefreshTable> KemperTables = new List<DataRefreshTable>();
-            foreach (Table KemperTable in KemperDatabase.Tables)
+            List<DataRefreshTable> DummyTables = new List<DataRefreshTable>();
+            foreach (Table DummyTable in DummyDatabase.Tables)
             {
-                if (KemperTable.ToString() == "[dbo].[CarrierProducts]" || KemperTable.ToString() == "[dbo].[CarrierProductPlanOptions]" || KemperTable.ToString() == "[dbo].[CarrierProductRiders]" || KemperTable.ToString() == "[dbo].[CarrierProductRiderPlanOptions]" || KemperTable.ToString() == "[dbo].[RateTables]" || KemperTable.ToString() == "[dbo].[RateTableDetails]" || KemperTable.ToString() == "[dbo].[Rates_ModalRates]" || KemperTable.ToString() == "[dbo].[Rates_RateTableModalRoundingOverrides]" || KemperTable.ToString() == "[dbo].[PlanReference_ProductBenefitValues]" || KemperTable.ToString() == "[dbo].[PlanReference_RiderBenefitValues]")
+                if (DummyTable.ToString() == "[dbo].[CarrierProducts]" || DummyTable.ToString() == "[dbo].[CarrierProductPlanOptions]" || DummyTable.ToString() == "[dbo].[CarrierProductRiders]" || DummyTable.ToString() == "[dbo].[CarrierProductRiderPlanOptions]" || DummyTable.ToString() == "[dbo].[RateTables]" || DummyTable.ToString() == "[dbo].[RateTableDetails]" || DummyTable.ToString() == "[dbo].[Rates_ModalRates]" || DummyTable.ToString() == "[dbo].[Rates_RateTableModalRoundingOverrides]" || DummyTable.ToString() == "[dbo].[PlanReference_ProductBenefitValues]" || DummyTable.ToString() == "[dbo].[PlanReference_RiderBenefitValues]")
                 {
-                    DataRefreshTable KemperDataRefreshTable = new DataRefreshTable();
-                    string TableName = KemperTable.ToString().Replace("[dbo].[", "").Replace("]", "");
+                    DataRefreshTable DummyDataRefreshTable = new DataRefreshTable();
+                    string TableName = DummyTable.ToString().Replace("[dbo].[", "").Replace("]", "");
                     string TableNameSS = Regex.Replace(TableName, @"([^s]+)s$", @"$1", RegexOptions.IgnoreCase);
                     TableNameSS = Regex.Replace(TableNameSS, @"([a-zA-Z0-9]+)_(\w+)$", @"$2", RegexOptions.IgnoreCase);
                     string ColumnList = String.Empty;
                     string ColumnListAA = String.Empty;
                     string ColumnListUpdate = String.Empty;
 
-                    foreach (Column KemperColumn in KemperTable.Columns)
+                    foreach (Column DummyColumn in DummyTable.Columns)
                     {
-                        string ColumnName = KemperColumn.ToString().Replace("[", "").Replace("]", "");
+                        string ColumnName = DummyColumn.ToString().Replace("[", "").Replace("]", "");
                         ColumnList = ColumnList + "\t," + ColumnName + Environment.NewLine;
                         ColumnListAA = ColumnListAA + "\t,aa." + ColumnName + Environment.NewLine;
-                        if (KemperColumn.InPrimaryKey == false)
+                        if (DummyColumn.InPrimaryKey == false)
                             ColumnListUpdate = ColumnListUpdate + "\t,aa." + ColumnName + " = bb." + ColumnName + Environment.NewLine;
                         //ColumnList.Add($",{ColumnName}");
                     }
-                    KemperDataRefreshTable.TableName = TableName;
-                    KemperDataRefreshTable.TableNameSS = TableNameSS;
-                    KemperDataRefreshTable.ColumnList = ColumnList.TrimStart('\t').TrimStart(',');
-                    KemperDataRefreshTable.ColumnListAA = ColumnListAA.TrimStart('\t').TrimStart(',');
-                    KemperDataRefreshTable.ColumnListUpdate = ColumnListUpdate.TrimStart('\t').TrimStart(',');
+                    DummyDataRefreshTable.TableName = TableName;
+                    DummyDataRefreshTable.TableNameSS = TableNameSS;
+                    DummyDataRefreshTable.ColumnList = ColumnList.TrimStart('\t').TrimStart(',');
+                    DummyDataRefreshTable.ColumnListAA = ColumnListAA.TrimStart('\t').TrimStart(',');
+                    DummyDataRefreshTable.ColumnListUpdate = ColumnListUpdate.TrimStart('\t').TrimStart(',');
 
-                    KemperTables.Add(KemperDataRefreshTable);
+                    DummyTables.Add(DummyDataRefreshTable);
                 }
             }
 
-            return KemperTables;
+            return DummyTables;
         }
     }
 }

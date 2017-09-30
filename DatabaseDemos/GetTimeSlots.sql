@@ -6,7 +6,7 @@ CREATE PROC [dbo].[PatientPortal_GetTimeSlots]
 	, @physicianID INT
 	, @practiceID INT
 	, @practiceGroupID INT
-	, @subjectiveRFVID INT
+	, @AppointmentPreferenceId INT
 	, @Debug INT = 0
 )
 AS BEGIN
@@ -22,23 +22,23 @@ AS BEGIN
 		DECLARE @tzOffset INT = 300; --Central
 
 		/* Get TimeZone & NewScheduler properties for each practice */
-		SELECT @TimeZoneName = dbo.sh_TimeZones.TimeZoneName
-			, @UseNewScheduler = COALESCE(dbo.sh_PracticePreferences.UseNewScheduler, 1)
-		FROM dbo.sh_PracticePreferences
-		INNER JOIN dbo.sh_TimeZones
-			ON dbo.sh_PracticePreferences.TimeZoneID = dbo.sh_TimeZones.TimeZoneID
-		WHERE (dbo.sh_PracticePreferences.PracticeID = @practiceID);
+		SELECT @TimeZoneName = dbo.TimeZones.TimeZoneName
+			, @UseNewScheduler = COALESCE(dbo.PracticePreferences.UseNewScheduler, 1)
+		FROM dbo.PracticePreferences
+		INNER JOIN dbo.TimeZones
+			ON dbo.PracticePreferences.TimeZoneID = dbo.TimeZones.TimeZoneID
+		WHERE (dbo.PracticePreferences.PracticeID = @practiceID);
 
 		IF (@TimeZoneName IS NOT NULL)
 			SET @tzOffset = dbo.GetUtcOffset(@TimeZoneName);
 
 		/* Get Length of SubjectiveRFV */
-		SELECT @length = dbo.sh_SubjectiveRFVs.AppointmentTimeMinutes
-			, @maxAppts = dbo.sh_SubjectiveRFVs.MaxAppointments
-		FROM dbo.sh_SubjectiveRFVs
-		WHERE dbo.sh_SubjectiveRFVs.SubjectiveRFVID = @SubjectiveRFVID
-		AND (dbo.sh_SubjectiveRFVs.PracticeID = @PracticeID 
-			OR dbo.sh_SubjectiveRFVs.PracticeGroupID = @PracticeGroupID
+		SELECT @length = dbo.AppointmentPreferences.AppointmentTimeMinutes
+			, @maxAppts = dbo.AppointmentPreferences.MaxAppointments
+		FROM dbo.AppointmentPreferences
+		WHERE dbo.AppointmentPreferences.AppointmentPreferenceId = @AppointmentPreferenceId
+		AND (dbo.AppointmentPreferences.PracticeID = @PracticeID 
+			OR dbo.AppointmentPreferences.PracticeGroupID = @PracticeGroupID
 			);
 
 		IF (@Debug = 1)
@@ -48,22 +48,22 @@ AS BEGIN
 		DECLARE @Appointments AS TABLE(
 			StartDate DATETIME NOT NULL
 			, EndDate DATETIME NOT NULL
-			, SubjectiveRFVID INT NOT NULL
+			, AppointmentPreferenceId INT NOT NULL
 		);
 		DECLARE @AppointmentsOverlap AS TABLE(
 			StartDate DATETIME NOT NULL
 			, EndDate DATETIME NOT NULL
-			, SubjectiveRFVID INT NOT NULL
+			, AppointmentPreferenceId INT NOT NULL
 		);
 
-		INSERT @Appointments(StartDate, EndDate, SubjectiveRFVID)
+		INSERT @Appointments(StartDate, EndDate, AppointmentPreferenceId)
 		SELECT sa.StartDate
 			, sa.EndDate
-			, sa.SubjectiveRFVID
-		FROM dbo.sa_AppointmentResources as sar
-		INNER JOIN dbo.sa_Appointments AS sa
+			, sa.AppointmentPreferenceId
+		FROM dbo.AppointmentResources as sar
+		INNER JOIN dbo.Appointments AS sa
 			ON sar.AppointmentID = sa.AppointmentID
-		INNER JOIN dbo.sa_Resources AS sr
+		INNER JOIN dbo.Resources AS sr
 			ON sar.AppointmentResourceID = sr.ResourceID
 		WHERE (sr.PhysicianID = @PhysicianID)
 		AND (sr.PracticeID = @PracticeID)
@@ -86,17 +86,17 @@ AS BEGIN
 			, RecurrencePattern NVARCHAR(256) NULL
 		);
 		INSERT @SpecialSlot(Name, IsReadOnly, StartDate, EndDate, RecurrencePattern)
-		SELECT dbo.sa_SpecialSlotTypes.Name
-			, dbo.sa_SpecialSlotTypes.ReadOnlySlot
-			, dbo.sa_SpecialSlots.StartDate
-			, dbo.sa_SpecialSlots.EndDate
-			, dbo.sa_SpecialSlots.RecurrencePattern
-		FROM dbo.sa_SpecialSlots 
-		INNER JOIN dbo.sa_SpecialSlotTypes 
-			ON dbo.sa_SpecialSlots.SpecialSlotTypeID = dbo.sa_SpecialSlotTypes.SpecialSlotTypeID
-		WHERE dbo.sa_SpecialSlots.PracticeID = @PracticeID 
-			AND dbo.sa_SpecialSlots.PhysicianID = @PhysicianID
-		ORDER BY dbo.sa_SpecialSlots.StartDate;
+		SELECT dbo.SpecialSlotTypes.Name
+			, dbo.SpecialSlotTypes.ReadOnlySlot
+			, dbo.SpecialSlots.StartDate
+			, dbo.SpecialSlots.EndDate
+			, dbo.SpecialSlots.RecurrencePattern
+		FROM dbo.SpecialSlots 
+		INNER JOIN dbo.SpecialSlotTypes 
+			ON dbo.SpecialSlots.SpecialSlotTypeID = dbo.SpecialSlotTypes.SpecialSlotTypeID
+		WHERE dbo.SpecialSlots.PracticeID = @PracticeID 
+			AND dbo.SpecialSlots.PhysicianID = @PhysicianID
+		ORDER BY dbo.SpecialSlots.StartDate;
 
 		IF (@Debug = 1)
 		BEGIN
@@ -236,8 +236,8 @@ AS BEGIN
 			/* Check if appointments overlap timeslot*/
 			IF EXISTS (SELECT * FROM @TimeSlot AS ts WHERE Taken = 0)
 			BEGIN
-				INSERT @AppointmentsOverlap (StartDate, EndDate, SubjectiveRFVID)
-				SELECT a.StartDate, a.EndDate, a.SubjectiveRFVID
+				INSERT @AppointmentsOverlap (StartDate, EndDate, AppointmentPreferenceId)
+				SELECT a.StartDate, a.EndDate, a.AppointmentPreferenceId
 				FROM @Appointments AS a
 				CROSS JOIN @TimeSlot AS ts
 				WHERE a.StartDate < ts.EndDate
@@ -247,7 +247,7 @@ AS BEGIN
 					SELECT * FROM @AppointmentsOverlap AS ao
 			
 				DECLARE @AppointmentCount INT = (SELECT COUNT(*) FROM @AppointmentsOverlap);
-				DECLARE @AppointmentCountRFVID INT = (SELECT COUNT(*) FROM @AppointmentsOverlap WHERE SubjectiveRFVID = @subjectiveRFVID);
+				DECLARE @AppointmentCountRFVID INT = (SELECT COUNT(*) FROM @AppointmentsOverlap WHERE AppointmentPreferenceId = @AppointmentPreferenceId);
 
 				IF (@maxAppts > 1 AND @AppointmentCountRFVID > 0 AND (@AppointmentCountRFVID >= @maxAppts))
 				BEGIN

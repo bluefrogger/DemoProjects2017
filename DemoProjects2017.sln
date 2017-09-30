@@ -7,6 +7,10 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DatabaseDemos", "DatabaseDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptDemos", "ScriptDemos\ScriptDemos.csproj", "{744D9024-5471-45C7-BDED-EB3ACC943B31}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreConsole", "AspNetCoreConsole\AspNetCoreConsole.csproj", "{5847C373-CC34-4A3F-B376-12BCE0C39B11}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreDemo", "AspNetCoreDemo\AspNetCoreDemo.csproj", "{2C850DF8-3C16-4B53-887D-CAADD0953755}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{744D9024-5471-45C7-BDED-EB3ACC943B31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{744D9024-5471-45C7-BDED-EB3ACC943B31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{744D9024-5471-45C7-BDED-EB3ACC943B31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5847C373-CC34-4A3F-B376-12BCE0C39B11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5847C373-CC34-4A3F-B376-12BCE0C39B11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5847C373-CC34-4A3F-B376-12BCE0C39B11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5847C373-CC34-4A3F-B376-12BCE0C39B11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C850DF8-3C16-4B53-887D-CAADD0953755}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C850DF8-3C16-4B53-887D-CAADD0953755}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C850DF8-3C16-4B53-887D-CAADD0953755}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C850DF8-3C16-4B53-887D-CAADD0953755}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
